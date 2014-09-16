@@ -1,5 +1,7 @@
 Modified Inter-Aural Cross Correlation Coefficient (IACC) calculation. 
 
+A straight-forward implementation in [julia](https://github.com/JuliaLang/julia).
+
 This is based on the room-acoustics version of the IACC but is extended 
 to calculate the temporal development of the IACC for stereo recordings 
 of musical instruments. 
