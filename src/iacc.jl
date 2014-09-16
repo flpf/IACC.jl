@@ -1,6 +1,7 @@
 using Base.LinAlg.BLAS
 using ArrayViews
 using WAV
+
 function performIACC()
 files=readdir("./")
   for fileIterate=1:length(files)
@@ -15,8 +16,12 @@ files=readdir("./")
 end
 
 function iacc{T<:Number}(leftChannel::AbstractVector{T},rightChannel::AbstractVector{T},ω::Int)
-	@assert size(leftChannel,1)==size(rightChannel,1)
-	sampleLength=size(leftChannel,1);
+
+				# Takes the left and right channel of an audio recording with the sample rate ω.
+				# Calculates the IACC of both channels.
+
+	@assert size(leftChannel,1)==size(rightChannel,1)#check if we have the same channel length for both sides
+	sampleLength=size(leftChannel,1); 
 	korrN=zero(Float32);
 	amp1N=zero(Float32);
 	amp2N=zero(Float32);
@@ -29,12 +34,13 @@ function iacc{T<:Number}(leftChannel::AbstractVector{T},rightChannel::AbstractVe
 	windowSiSmall = div(ω,1000)*2; # small windwow ± 1ms
 	windowSize = int(windowSiSmall*80); #window-size for the integration window: 80 ms
 	windowSizeHalf = div(windowSize,2);
-	for i=1:sampleLength
+
+	for i=1:sampleLength #Pre-computation of the squared signals for normalising the IACF (Inter-Aural Cross Correlation Function).
 		ampLeft[i] = leftChannel[i]*leftChannel[i];
 		ampRight[i] = rightChannel[i]*rightChannel[i];
 	end	
 	korrS=zeros(Float32,windowSiSmall*2);
-##### Old version with averaged short window integration
+##### Old version with averaged short window integration. -> Should work but yields much noisier results.
 	#=for i =div(windowSize,2):sampleLenght-div(windowSize,2)=#
 			#=korrN=0;=#
 			#=amp1N=0;=#
@@ -71,7 +77,8 @@ for i=windowSizeHalf+windowSiSmall:div(windowSiSmall,2):sampleLength-windowSizeH
 	#=for ff=0:windowSiSmall-1=#
    #=tempKo[i+ff]=maximum(korrS)./sqrt(amp1N*amp2N);=#
 	#=end=#
-	fill!(view(tempKo,i:i+windowSiSmall),maximum(korrS)./sqrt(amp1N*amp2N));
+	fill!(view(tempKo,i:i+windowSiSmall),maximum(korrS)./sqrt(amp1N*amp2N)); #The output vector tempKo could be shrinked to 1:(SampleLength/windowSiSmall) and then scaled correctly.
+	
 end
-return tempKo;
+return tempko;
 end
