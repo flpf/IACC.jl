@@ -59,6 +59,7 @@ for i =div(windowSize,2):sampleLenght-div(windowSize,2)
 	return iaccResults;
 end
 
+
 function iacc{T<:Number}(leftChannel::AbstractVector{T},rightChannel::AbstractVector{T},ω::Int)
 # Takes the left and right channel of an audio recording with the sample rate ω.
 # Calculates the IACC of both channels.
