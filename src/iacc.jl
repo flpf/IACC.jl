@@ -90,5 +90,5 @@ function iacc{T<:Number}(leftChannel::AbstractVector{T},rightChannel::AbstractVe
     amp2N=sum(view(ampRight,i-windowSizeHalf-windowSiSmall+1:i+windowSizeHalf+windowSiSmall));
     fill!(view(tempKo,i:i+windowSiSmall),maximum(korrS)./sqrt(amp1N*amp2N)); #The output vector tempKo could be shrinked to 1:(SampleLength/windowSiSmall) and then scaled correctly.
   end
-  return tempko;
+  return tempKo;
 end
