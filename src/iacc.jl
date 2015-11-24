@@ -25,7 +25,7 @@ function iaccAveraged{T<:Number}(leftChannel::AbstractVector{T},rightChannel::Ab
   amp2N=zero(Float32);
   max=zero(Float32);
   tempKo =  zeros(Float32,sampleLength);
-#=iaccResult=zeros(Float32,sampleLength);=#
+ iaccResult=zeros(Float32,sampleLength);
   korr = zeros(Float32,sampleLength);
   ampLeft = zeros(Float32,sampleLength);
   ampRight = zeros(Float32,sampleLength);
@@ -37,7 +37,7 @@ function iaccAveraged{T<:Number}(leftChannel::AbstractVector{T},rightChannel::Ab
     ampRight[i] = rightChannel[i]*rightChannel[i];
   end	
   korrS=zeros(Float32,windowSiSmall*2);
-for i =div(windowSize,2):sampleLenght-div(windowSize,2)
+for i =div(windowSize,2):sampleLength-div(windowSize,2)
 	korrN=0;
 	amp1N=0;
 	amp2N=0;
@@ -48,7 +48,7 @@ for i =div(windowSize,2):sampleLenght-div(windowSize,2)
 	end
 	tempKo[i]= korrN/sqrt(amp1N*amp2N);
 	end
-	for i =div(windowSize,2):sampleLenght-div(windowSize,2)
+	for i =div(windowSize,2):sampleLength-div(windowSize,2)
 		max = -1;
 		for  j = -div(windowSiSmall,2): div(windowSiSmall,2)
 			if tempKo[i+j]>max
