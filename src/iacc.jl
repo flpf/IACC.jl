@@ -37,7 +37,7 @@ function iaccAveraged{T<:Number}(leftChannel::AbstractVector{T},rightChannel::Ab
     ampRight[i] = rightChannel[i]*rightChannel[i];
   end	
   korrS=zeros(Float32,windowSiSmall*2);
-for i =div(windowSize,2):sampleLength-div(windowSize,2)
+for i =div(windowSize,2)+1:sampleLength-div(windowSize,2)
 	korrN=0;
 	amp1N=0;
 	amp2N=0;
